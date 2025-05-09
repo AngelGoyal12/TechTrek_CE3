@@ -1,0 +1,359 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    :root {
+    --primary-color: #4e73df;
+    --primary-hover: #375bd9;
+    --success-color: #1cc88a;
+    --error-color: #e74a3b;
+    --warning-color: #f6c23e;
+    --light-bg: #f8f9fc;
+    --dark-text: #5a5c69;
+    --border-color: #e3e6f0;
+    --shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15);
+    }
+
+    
+    .auth-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    }
+
+    .auth-card:hover {
+    box-shadow: 0 .5rem 2rem 0 rgba(58,59,69,.2);
+    }
+
+    .auth-card .card-header {
+    background-color: white;
+    border-bottom: 1px solid var(--border-color);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 1.5rem 1.25rem;
+    }
+
+    .auth-card .card-body {
+    padding: 1.75rem;
+    }
+
+    
+    .auth-form .form-control {
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .auth-form .form-control:focus {
+    border-color: #bac8f3;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+    }
+
+    .auth-form .form-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+    }
+
+   
+    .btn-auth {
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    }
+
+    .btn-auth-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    }
+
+    .btn-auth-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    }
+
+    
+    .alert-message {
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    }
+
+    .alert-success {
+    background-color: rgba(28, 200, 138, 0.1);
+    border-left: 4px solid var(--success-color);
+    color: #0f6848;
+    }
+
+    .alert-error {
+    background-color: rgba(231, 74, 59, 0.1);
+    border-left: 4px solid var(--error-color);
+    color: #95312a;
+    }
+
+    .alert-warning {
+    background-color: rgba(246, 194, 62, 0.1);
+    border-left: 4px solid var(--warning-color);
+    color: #9d7f28;
+    }
+
+    
+    .auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background-color: var(--light-bg);
+    }
+
+    .auth-switch {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    }
+
+    .auth-switch a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    }
+
+    .auth-switch a:hover {
+    text-decoration: underline;
+    }
+
+   
+    .is-invalid {
+    border-color: var(--error-color) !important;
+    }
+
+    .invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--error-color);
+    }
+
+    
+    .auth-form select.form-control {
+    height: 50px;
+    }
+
+    .auth-form .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    }
+
+    .auth-form .checkbox-container input[type="checkbox"] {
+    margin-right: 0.5rem;
+    }
+
+  
+    @media (max-width: 768px) {
+    .auth-card {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    }
+
+    
+    .auth-logo {
+    display: block;
+    margin: 0 auto 2rem auto;
+    max-width: 100px;
+    }
+
+   
+    .social-login {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    }
+
+    .social-login-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 0.5rem;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s;
+    }
+
+    .social-login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    
+    .password-strength {
+    height: 5px;
+    margin-top: 0.25rem;
+    border-radius: 5px;
+    background-color: #e9ecef;
+    }
+
+    .password-strength-indicator {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.3s;
+    }
+
+    .strength-weak {
+    width: 25%;
+    background-color: var(--error-color);
+    }
+
+    .strength-medium {
+    width: 50%;
+    background-color: var(--warning-color);
+    }
+
+    .strength-strong {
+    width: 75%;
+    background-color: #17a2b8;
+    }
+
+    .strength-very-strong {
+    width: 100%;
+    background-color: var(--success-color);
+    }
+</style>
+{% endblock %}
+
+{% block main_block %}
+<div class="auth-page py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="auth-card card">
+          <div class="card-header text-center">
+            <h4 class="mb-0">Create an Account</h4>
+          </div>
+          <div class="card-body">
+            
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert-message alert-{{ message.tags }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            
+            <form method="POST" enctype="multipart/form-data" class="auth-form" novalidate>
+              {% csrf_token %}
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
+                    {{ form.username.as_widget|safe }}
+                    {% if form.username.errors %}
+                      <div class="invalid-feedback">
+                        {{ form.username.errors|striptags }}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                    {{ form.email.as_widget|safe }}
+                    {% if form.email.errors %}
+                      <div class="invalid-feedback">
+                        {{ form.email.errors|striptags }}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="{{ form.password1.id_for_label }}" class="form-label">{{ form.password1.label }}</label>
+                    {{ form.password1.as_widget|safe }}
+                    {% if form.password1.errors %}
+                      <div class="invalid-feedback">
+                        {{ form.password1.errors|striptags }}
+                      </div>
+                    {% endif %}
+                    <small class="form-text text-muted">{{ form.password1.help_text|safe }}</small>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="{{ form.password2.id_for_label }}" class="form-label">{{ form.password2.label }}</label>
+                    {{ form.password2.as_widget|safe }}
+                    {% if form.password2.errors %}
+                      <div class="invalid-feedback">
+                        {{ form.password2.errors|striptags }}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="{{ form.phone_number.id_for_label }}" class="form-label">{{ form.phone_number.label }}</label>
+                    {{ form.phone_number.as_widget|safe }}
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">{{ form.date_of_birth.label }}</label>
+                    {{ form.date_of_birth.as_widget|safe }}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="{{ form.address.id_for_label }}" class="form-label">{{ form.address.label }}</label>
+                {{ form.address.as_widget|safe }}
+              </div>
+              
+              <div class="mb-3">
+                <label for="{{ form.bio.id_for_label }}" class="form-label">{{ form.bio.label }}</label>
+                {{ form.bio.as_widget|safe }}
+              </div>
+              
+              <div class="mb-3">
+                <label for="{{ form.user_type.id_for_label }}" class="form-label">{{ form.user_type.label }}</label>
+                {{ form.user_type.as_widget|safe }}
+                {% if form.user_type.errors %}
+                  <div class="invalid-feedback">
+                    {{ form.user_type.errors|striptags }}
+                  </div>
+                {% endif %}
+              </div>
+
+              <button type="submit" class="btn btn-auth btn-auth-primary w-100 mt-3">Register</button>
+              
+              <div class="auth-switch">
+                Already have an account? <a href="{% url 'login' %}">Login here</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

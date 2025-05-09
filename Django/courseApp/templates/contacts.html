@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact Messages</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    {% block main_block %}
+    <br><br>
+    <div class="container-fluid">
+        <h2 class="mt-4">Contact Messages</h2>
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">All Contact Messages</h6>
+          </div>
+          <div class="card-body">
+            {% if contacts %}
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>S.No.</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Message</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for contact in contacts %}
+                    <tr>
+                      <td>{{ contact.subject }}</td>
+                      <td>{{ contact.name }}</td>
+                      <td>{{ contact.email }}</td>
+                      <td>{{ contact.message }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <div class="alert alert-info" role="alert">
+                No contact messages found.
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+{% endblock %}
+</body>
+</html>

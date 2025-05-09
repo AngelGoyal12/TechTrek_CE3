@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TechTrek{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    {% block extra_css %}
+    <style>
+        :root {
+    --primary-color: #2a5298;
+    --secondary-color: #1e1e1c;
+    --accent-color: #f5f5f5;
+    --text-color: #2d2f31;
+    --white: #ffffff;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: var(--white);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.search-bar {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 2rem;
+    position: relative;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    font-size: 1rem;
+}
+
+.search-bar button {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.login-btn, .signup-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.login-btn {
+    background: none;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.signup-btn {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.mobile-menu-btn {
+    display: none;
+}
+
+.btn btn-secondary dropdown-toggle {
+    text-decoration: none;
+    color: red
+}
+
+.footer {
+    background: var(--secondary-color);
+    color: var(--white);
+    padding: 4rem 2rem 2rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+}
+
+.footer-section a {
+    display: block;
+    color: #ccc;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-links a {
+    display: inline-block;
+    margin-right: 1rem;
+    font-size: 1.5rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #444;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--text-color);
+        cursor: pointer;
+    }
+
+    .search-bar {
+        margin: 0 1rem;
+    }
+
+}
+
+.navbar {
+    background-color: var(--white) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-item:hover {
+    background-color: var(--accent-color);
+}
+
+.dropdown-item i {
+    width: 20px;
+    color: var(--primary-color);
+}
+
+/* Search Bar Styles */
+.search-form {
+    min-width: 300px;
+}
+
+.search-form .input-group {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.search-form .form-control {
+    border-right: none;
+}
+
+.search-form .btn-outline-primary {
+    border-left: none;
+    background-color: white;
+}
+
+.search-form .btn-outline-primary:hover {
+    background-color: var(--accent-color);
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-link {
+    text-decoration: none;
+}
+
+/* Cart Badge */
+.badge {
+    font-size: 0.6rem;
+    padding: 0.25em 0.4em;
+}
+/* Add these styles to your base.css file */
+.menu-dropdown {
+    position: relative;
+    margin-right: 1rem;
+}
+
+.hamburger-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.hamburger-btn:hover {
+    color: var(--primary-color);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--white);
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    z-index: 1001;
+}
+
+.dropdown-content a {
+    color: var(--text-color);
+    padding: 5px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+}
+
+.menu-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Adjust existing mobile menu button styles */
+.mobile-menu-btn {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .menu-dropdown {
+        margin-right: 0;
+    }
+    
+    .dropdown-content {
+        width: 100vw;
+        left: -1rem; /* Adjust based on your nav padding */
+        top: calc(100% + 1rem);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+    .search-form {
+        margin: 1rem 0;
+        width: 100%;
+    }
+    
+    .navbar-collapse {
+        padding: 1rem 0;
+    }
+    
+    .d-flex.align-items-center {
+        flex-wrap: wrap;
+        gap: 0.5rem !important;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+.flash-messages-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1050;
+    width: 350px;
+}
+
+.flash-message {
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #856404;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+    </style>
+    {% endblock %}
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="{% url 'index' %}" style="text-decoration: none;"><h1>TechTrek</h1></a>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for courses">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="nav-links">
+                
+    
+    {% if user.is_authenticated and user.user_type == 'admin' %}
+    <div class="menu-dropdown">
+        <button class="hamburger-btn">
+            Categories
+        </button>
+        <div class="dropdown-content">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'about' %}">About Us</a>
+            <a href="{% url 'blog' %}">Blog</a>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'cpp' %}">C++</a>
+            <a href="{% url 'js' %}">JavaScript</a>
+            <a href="{% url 'ai' %}">Artificial Intelligence</a>
+            <a href="{% url 'datascience' %}">Data Science</a>
+            <a href="{% url 'webdev' %}">Web Development</a>
+            <a href="{% url 'python' %}">Python</a>
+            <a href="{% url 'sql' %}">SQL</a>
+            <a href="{% url 'react' %}">React Js</a>
+            <a href="{% url 'show_testimonials' %}">Testimonials</a>
+            <a href="{% url 'careers:careers' %}">Teach on TechTrek</a>
+            <a href="{% url 'show_courses' %}">Crash Courses</a>
+        </div>
+    </div>
+
+        <strong><a class="nav-link" href="{% url 'show_contacts' %}">Messages</a></strong>
+
+    <!-- <a href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i></a> -->
+    <a href="{% url 'admin_dashboard' %}"><button class="login-btn"><i class="fa-solid fa-user"></button></i></a>
+    <a href="{% url 'logout' %}"><button class="login-btn"><i class="fa-solid fa-right-from-bracket"></button></i></a>
+    
+
+
+    {% elif user.is_authenticated and user.user_type == 'user'%}
+    <div class="menu-dropdown">
+        <button class="hamburger-btn">
+            Categories
+        </button>
+        <div class="dropdown-content">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'about' %}">About Us</a>
+            <a href="{% url 'blog' %}">Blog</a>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'cpp' %}">C++</a>
+            <a href="{% url 'js' %}">JavaScript</a>
+            <a href="{% url 'ai' %}">Artificial Intelligence</a>
+            <a href="{% url 'datascience' %}">Data Science</a>
+            <a href="{% url 'webdev' %}">Web Development</a>
+            <a href="{% url 'python' %}">Python</a>
+            <a href="{% url 'sql' %}">SQL</a>
+            <a href="{% url 'react' %}">React Js</a>
+            <a href="{% url 'show_testimonials' %}">Testimonials</a>
+            <a href="{% url 'careers:careers' %}">Teach on TechTrek</a>
+            <a href="{% url 'show_courses' %}">Crash Courses</a>
+        </div>
+    </div>
+    <a href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i></a>
+    <a href="{% url 'user_dashboard' %}"><button class="login-btn"><i class="fa-solid fa-user"></button></i></a>
+    <a href="{% url 'logout' %}"><button class="login-btn"><i class="fa-solid fa-right-from-bracket"></button></i></a>
+
+    {% else %}
+    <div class="menu-dropdown">
+        <button class="hamburger-btn">
+            Categories
+        </button>
+        <div class="dropdown-content">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'about' %}">About Us</a>
+            <a href="{% url 'blog' %}">Blog</a>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'cpp' %}">C++</a>
+            <a href="{% url 'js' %}">JavaScript</a>
+            <a href="{% url 'ai' %}">Artificial Intelligence</a>
+            <a href="{% url 'datascience' %}">Data Science</a>
+            <a href="{% url 'webdev' %}">Web Development</a>
+            <a href="{% url 'python' %}">Python</a>
+            <a href="{% url 'sql' %}">SQL</a>
+            <a href="{% url 'react' %}">React Js</a>
+            <a href="{% url 'show_testimonials' %}">Testimonials</a>
+            <a href="{% url 'careers:careers' %}">Teach on TechTrek</a>
+            <a href="{% url 'show_courses' %}">Crash Courses</a>
+        </div>
+    </div>
+    <a href="{% url 'login' %}"><button class="login-btn">Log in</button></a>
+    <a href="{% url 'register' %}"><button class="login-btn">Sign Up</button></a>
+    {% endif %}
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+        </nav>
+    </header>
+
+    
+    {% if messages %}
+    <div class="flash-messages-container">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show flash-message" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <main class="mt-5">
+        {% block main_block %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Business</h3>
+                <a href="#">Teach on TechTrek</a>
+                <a href="{% url 'about' %}">About us</a>
+                <a href="{% url 'contact' %}">Contact us</a>
+            </div>
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <a href="{% url 'webdev' %}">Web Development</a>
+                <a href="{% url 'python' %}">Python</a>
+                <a href="{% url 'cpp' %}">C++</a>
+                <a href="{% url 'sql' %}">SQL</a>
+                <a href="{% url 'js' %}">JavaScript</a>
+                <a href="{% url 'react' %}">React Js</a>
+                <a href="{% url 'ai' %}">Artificial Intelligence</a>
+                <a href="{% url 'datascience' %}">Data Science</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="{% url 'privacy' %}">Privacy Policy & Cookie Policy</a>
+                <a href="{% url 'terms' %}">Terms & Conditions</a>
+                <a href="{% url 'accessibility' %}">Accessibility Statement</a>
+            </div>
+            <div class="footer-section">
+                <h3>Stay Connected</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            
+            <p>&copy; 2025 TechTrek. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjpvNGZ5VTrxU8s" crossorigin="anonymous"></script>
+    
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

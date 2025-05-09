@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}My Orders{% endblock %}
+
+{% block main_block %}
+<div class="container py-5 mt-5">
+  <h2 class="text-center mb-5 fw-bold">Order History</h2>
+
+  {% if orders %}
+    <div class="row row-cols-1 g-4">
+      {% for order in orders %}
+      <div class="col">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Order #{{ order.id }}</h5>
+
+            <p class="mb-1">
+              <span class="fw-semibold">Status:</span>
+              {% if order.status == 'accepted' %}
+                <span class="badge bg-success">{{ order.status|title }}</span>
+              {% elif order.status == 'rejected' %}
+                <span class="badge bg-danger">{{ order.status|title }}</span>
+              {% else %}
+                <span class="badge bg-warning text-dark">{{ order.status|title }}</span>
+              {% endif %}
+            </p>
+
+            <p class="mb-1"><span class="fw-semibold">Total:</span> ₹{{ order.grand_total }}</p>
+            <p class="mb-3"><span class="fw-semibold">Placed on:</span> {{ order.created_at|date:"F d, Y H:i" }}</p>
+
+            <h6 class="fw-bold mt-3">Items:</h6>
+            <ul class="list-group list-group-flush">
+              {% for item in order.items.all %}
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                {{ item.item_name }}
+                <span class="text-muted">₹{{ item.price }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info text-center mt-4">
+      You haven't placed any orders yet. <a href="{% url 'cart' %}" class="alert-link">Start shopping now</a>!
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

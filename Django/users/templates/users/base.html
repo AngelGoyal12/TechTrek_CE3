@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TechTrek{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="{% url 'index' %}" style="text-decoration: none;"><h1>TechTrek</h1></a>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for courses">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="nav-links">
+                
+    
+    {% if user.is_authenticated and user.user_type == 'admin' %}
+    <div class="menu-dropdown">
+        <button class="hamburger-btn">
+            Categories
+        </button>
+        <div class="dropdown-content">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'about' %}">About Us</a>
+            <a href="{% url 'blog' %}">Blog</a>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'cpp' %}">C++</a>
+            <a href="{% url 'js' %}">JavaScript</a>
+            <a href="{% url 'ai' %}">Artificial Intelligence</a>
+            <a href="{% url 'datascience' %}">Data Science</a>
+            <a href="{% url 'webdev' %}">Web Development</a>
+            <a href="{% url 'python' %}">Python</a>
+            <a href="{% url 'sql' %}">SQL</a>
+            <a href="{% url 'react' %}">React Js</a>
+            <a href="{% url 'careers:careers' %}">Teach on TechTrek</a>
+        </div>
+    </div>
+    <a href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i></a>
+
+    <a href="{% url 'admin_dashboard' %}"><button class="login-btn"><i class="fa-solid fa-user"></button></i></a>
+    <a href="{% url 'logout' %}"><button class="login-btn"><i class="fa-solid fa-right-from-bracket"></button></i></a>
+    {% elif user.is_authenticated and user.user_type == 'user'%}
+    <div class="menu-dropdown">
+        <button class="hamburger-btn">
+            Categories
+        </button>
+        <div class="dropdown-content">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'about' %}">About Us</a>
+            <a href="{% url 'blog' %}">Blog</a>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'cpp' %}">C++</a>
+            <a href="{% url 'js' %}">JavaScript</a>
+            <a href="{% url 'ai' %}">Artificial Intelligence</a>
+            <a href="{% url 'datascience' %}">Data Science</a>
+            <a href="{% url 'pricing' %}">PLans&Pricing</a>
+            <a href="{% url 'webdev' %}">Web Development</a>
+            <a href="{% url 'python' %}">Python</a>
+            <a href="{% url 'sql' %}">SQL</a>
+            <a href="{% url 'react' %}">React Js</a>
+            <a href="{% url 'careers:careers' %}">Teach on TechTrek</a>
+        </div>
+    </div>
+    <a href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i></a>
+    <a href="{% url 'user_dashboard' %}"><button class="login-btn"><i class="fa-solid fa-user"></button></i></a>
+    <a href="{% url 'logout' %}"><button class="login-btn"><i class="fa-solid fa-right-from-bracket"></button></i></a>
+
+    {% else %}
+    <div class="menu-dropdown">
+        <button class="hamburger-btn">
+            Categories
+        </button>
+        <div class="dropdown-content">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'about' %}">About Us</a>
+            <a href="{% url 'blog' %}">Blog</a>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'cpp' %}">C++</a>
+            <a href="{% url 'js' %}">JavaScript</a>
+            <a href="{% url 'ai' %}">Artificial Intelligence</a>
+            <a href="{% url 'datascience' %}">Data Science</a>
+            <a href="{% url 'pricing' %}">PLans&Pricing</a>
+            <a href="{% url 'webdev' %}">Web Development</a>
+            <a href="{% url 'python' %}">Python</a>
+            <a href="{% url 'sql' %}">SQL</a>
+            <a href="{% url 'react' %}">React Js</a>
+            <a href="{% url 'careers:careers' %}">Teach on TechTrek</a>
+        </div>
+    </div>
+    <a href="{% url 'login' %}"><button class="login-btn">Log in</button></a>
+    <a href="{% url 'register' %}"><button class="login-btn">Sign Up</button></a>
+    {% endif %}
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+        </nav>
+    </header>
+
+    
+    <!-- Add this messages section -->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <main class="mt-5">
+        {% block main_block %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Business</h3>
+                <a href="#">Teach on TechTrek</a>
+                <a href="{% url 'about' %}">About us</a>
+                <a href="{% url 'contact' %}">Contact us</a>
+            </div>
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <a href="{% url 'webdev' %}">Web Development</a>
+                <a href="{% url 'python' %}">Python</a>
+                <a href="{% url 'cpp' %}">C++</a>
+                <a href="{% url 'sql' %}">SQL</a>
+                <a href="{% url 'js' %}">JavaScript</a>
+                <a href="{% url 'react' %}">React Js</a>
+                <a href="{% url 'ai' %}">Artificial Intelligence</a>
+                <a href="{% url 'datascience' %}">Data Science</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="{% url 'privacy' %}">Privacy Policy & Cookie Policy</a>
+                <a href="{% url 'terms' %}">Terms & Conditions</a>
+                <a href="{% url 'accessibility' %}">Accessibility Statement</a>
+            </div>
+            <div class="footer-section">
+                <h3>Stay Connected</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            
+            <p>&copy; 2025 TechTrek. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjpvNGZ5VTrxU8s" crossorigin="anonymous"></script>
+    
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

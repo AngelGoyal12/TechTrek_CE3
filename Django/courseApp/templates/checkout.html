@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+
+{% block extra_css %}
+<style>
+    .checkout-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .form-section {
+        margin-bottom: 30px;
+        padding: 20px;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .section-title {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .card-icon {
+        font-size: 1.5rem;
+        margin-right: 10px;
+    }
+    .order-summary {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .input-error {
+        border-color: #dc3545;
+    }
+    .error-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block main_block %}
+<div class="checkout-container my-5">
+    <h1 class="mb-4">Checkout</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="row">
+        <div class="col-md-8">
+            <form id="checkout-form" action="{% url 'place_order' %}" method="POST">
+                {% csrf_token %}
+                
+                
+                <div class="form-section mb-4">
+                    <h3 class="section-title">Personal Information</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="first_name" class="form-label">First Name*</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" required>
+                            <div class="error-message" id="first_name-error"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="last_name" class="form-label">Last Name*</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            <div class="error-message" id="last_name-error"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address*</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="error-message" id="email-error"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number*</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                        <div class="error-message" id="phone-error"></div>
+                    </div>
+                </div>
+                
+                
+                <div class="form-section mb-4">
+                    <h3 class="section-title">Billing Address</h3>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Street Address*</label>
+                        <input type="text" class="form-control" id="address" name="address" required>
+                        <div class="error-message" id="address-error"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="city" class="form-label">City*</label>
+                            <input type="text" class="form-control" id="city" name="city" required>
+                            <div class="error-message" id="city-error"></div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="state" class="form-label">State*</label>
+                            <input type="text" class="form-control" id="state" name="state" required>
+                            <div class="error-message" id="state-error"></div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="zipcode" class="form-label">Zip Code*</label>
+                            <input type="text" class="form-control" id="zipcode" name="zipcode" required>
+                            <div class="error-message" id="zipcode-error"></div>
+                        </div>
+                    </div>
+                </div>
+                
+               
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'cart' %}" class="btn btn-secondary">Back to Cart</a>
+                    <button type="submit"  >Make Purchase</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="order-summary">
+                <h3 class="section-title">Order Summary</h3>
+                <table class="table">
+                    <tbody>
+                        {% if is_authenticated %}
+                            {% for item in cart_items %}
+                                <tr>
+                                    <td>{{ item.item_name }}</td>
+                                    <td class="text-end">₹{{ item.price }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            {% for item in cart_items %}
+                                <tr>
+                                    <td>{{ item.item_name }}</td>
+                                    <td class="text-end">₹{{ item.price }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        <tr>
+                            <th>Subtotal</th>
+                            <td class="text-end">₹{{ total }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tax (18%)</th>
+                            <td class="text-end">₹{{ tax }}</td>
+                        </tr>
+                        <tr class="fw-bold">
+                            <th>Total</th>
+                            <td class="text-end">₹{{ grand_total }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        const cardNumberInput = document.getElementById('card_number');
+        if (cardNumberInput) {
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                let formattedValue = '';
+                
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
+                }
+                
+                e.target.value = formattedValue;
+            });
+        }
+        
+      
+        const checkoutForm = document.getElementById('checkout-form');
+        if (checkoutForm) {
+            checkoutForm.addEventListener('submit', function(e) {
+                let isValid = true;
+                
+                
+                const firstName = document.getElementById('first_name');
+                if (firstName.value.trim() === '') {
+                    showError(firstName, 'First name is required');
+                    isValid = false;
+                } else {
+                    clearError(firstName);
+                }
+                
+                // Validate last name
+                const lastName = document.getElementById('last_name');
+                if (lastName.value.trim() === '') {
+                    showError(lastName, 'Last name is required');
+                    isValid = false;
+                } else {
+                    clearError(lastName);
+                }
+                
+                
+                const email = document.getElementById('email');
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email.value)) {
+                    showError(email, 'Please enter a valid email address');
+                    isValid = false;
+                } else {
+                    clearError(email);
+                }
+                
+                // Validate phone
+                const phone = document.getElementById('phone');
+                if (phone.value.trim() === '' || phone.value.replace(/\D/g, '').length < 10) {
+                    showError(phone, 'Please enter a valid phone number');
+                    isValid = false;
+                } else {
+                    clearError(phone);
+                }
+                
+                // Validate address
+                const address = document.getElementById('address');
+                if (address.value.trim() === '') {
+                    showError(address, 'Address is required');
+                    isValid = false;
+                } else {
+                    clearError(address);
+                }
+                
+                // Validate city
+                const city = document.getElementById('city');
+                if (city.value.trim() === '') {
+                    showError(city, 'City is required');
+                    isValid = false;
+                } else {
+                    clearError(city);
+                }
+                
+                // Validate state
+                const state = document.getElementById('state');
+                if (state.value.trim() === '') {
+                    showError(state, 'State is required');
+                    isValid = false;
+                } else {
+                    clearError(state);
+                }
+                
+                // Validate zipcode
+                const zipcode = document.getElementById('zipcode');
+                if (zipcode.value.trim() === '' || !/^\d{6}$/.test(zipcode.value.replace(/\D/g, ''))) {
+                    showError(zipcode, 'Please enter a valid 6-digit zip code');
+                    isValid = false;
+                } else {
+                    clearError(zipcode);
+                }
+                
+                // Validate card number
+                const cardNumber = document.getElementById('card_number');
+                if (cardNumber.value.replace(/\s/g, '').length !== 16 || !/^\d+$/.test(cardNumber.value.replace(/\s/g, ''))) {
+                    showError(cardNumber, 'Please enter a valid 16-digit card number');
+                    isValid = false;
+                } else {
+                    clearError(cardNumber);
+                }
+                
+                // Validate expiry month
+                const expMonth = document.getElementById('exp_month');
+                if (expMonth.value === '' || expMonth.value === null) {
+                    showError(expMonth, 'Please select expiry month');
+                    isValid = false;
+                } else {
+                    clearError(expMonth);
+                }
+                
+                // Validate expiry year
+                const expYear = document.getElementById('exp_year');
+                if (expYear.value === '' || expYear.value === null) {
+                    showError(expYear, 'Please select expiry year');
+                    isValid = false;
+                } else {
+                    clearError(expYear);
+                }
+                
+                // Validate CVV
+                const cvv = document.getElementById('cvv');
+                if (cvv.value.length < 3 || !/^\d+$/.test(cvv.value)) {
+                    showError(cvv, 'Please enter a valid CVV (3-4 digits)');
+                    isValid = false;
+                } else {
+                    clearError(cvv);
+                }
+                
+                // Validate name on card
+                const cardName = document.getElementById('card_name');
+                if (cardName.value.trim() === '') {
+                    showError(cardName, 'Name on card is required');
+                    isValid = false;
+                } else {
+                    clearError(cardName);
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                }
+            });
+        }
+        
+        function showError(inputElement, errorMessage) {
+            inputElement.classList.add('input-error');
+            const errorElement = document.getElementById(inputElement.id + '-error');
+            if (errorElement) {
+                errorElement.textContent = errorMessage;
+            }
+        }
+        
+        function clearError(inputElement) {
+            inputElement.classList.remove('input-error');
+            const errorElement = document.getElementById(inputElement.id + '-error');
+            if (errorElement) {
+                errorElement.textContent = '';
+            }
+        }
+    });
+</script>
+{% endblock %}

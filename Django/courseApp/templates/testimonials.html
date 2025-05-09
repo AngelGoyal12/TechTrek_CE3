@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}TechTrek - Testimonials{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #193d7b;
+        --secondary-color: #1e1e1c;
+        --accent-color: #f5f5f5;
+        --text-color: #2d2f31;
+        --white: #ffffff;
+    }
+
+    .testimonials-header {
+        background-color: var(--primary-color);
+        color: var(--white);
+        padding: 60px 0;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .testimonials-header h1 {
+        font-size: 2.8rem;
+        margin-bottom: 15px;
+    }
+
+    .testimonials-header p {
+        font-size: 1.2rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .testimonials-container {
+        padding: 20px 0 80px 0;
+    }
+
+    .testimonial-card {
+        background: var(--white);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        padding: 30px;
+        margin-bottom: 30px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+
+    .testimonial-card::before {
+        content: '"';
+        font-size: 120px;
+        position: absolute;
+        top: -20px;
+        left: 10px;
+        color: var(--primary-color);
+        opacity: 0.1;
+        font-family: Georgia, serif;
+    }
+
+    .testimonial-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .testimonial-text {
+        font-style: italic;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--text-color);
+        margin-bottom: 20px;
+    }
+
+    .student-profile {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+    }
+
+    .student-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--primary-color);
+    }
+
+    .student-info {
+        margin-left: 15px;
+    }
+
+    .student-name {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 1.1rem;
+        color: var(--primary-color);
+    }
+
+    .student-title {
+        color: #777;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        .testimonials-header {
+            padding: 40px 0;
+        }
+        
+        .testimonials-header h1 {
+            font-size: 2.2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block main_block %}
+<div class="testimonials-header">
+    <div class="container">
+        <h1>What Our Students Say</h1>
+        <p>Discover what our students have achieved after learning with TechTrek courses</p>
+    </div>
+</div>
+
+<div class="testimonials-container">
+    <div class="container">
+        <div class="row">
+            {% if testimonials %}
+                {% for testimonial in testimonials %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="testimonial-text">
+                                {{ testimonial.content }}
+                            </div>
+                            <div class="student-profile">
+                                <div class="student-info">
+                                    <div class="student-name">{{ testimonial.student_name }}</div>
+                                    <div class="student-title">{{ testimonial.student_title }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center py-5">
+                    <h3>No testimonials available at the moment</h3>
+                    <p>Check back soon to see what our students are saying about our courses!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% block title_block %}Shopping Cart{% endblock %}
+{% block extra_css %}
+<style>
+    .cart{
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #2a5298;
+        text-align: center;
+        margin-top: 50rem;
+    }
+    .container{
+        overflow: scroll;
+        margin-top: 150px;
+    }
+    /* Cart Styles */
+.cart-container {
+    max-width: 1000px;
+    margin: 100px auto 90px;
+    padding: 100px;
+    
+}
+
+.cart-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2a5298;
+}
+
+.cart-items {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.item-details h3 {
+    margin: 0 0 5px;
+    font-size: 18px;
+}
+
+.item-details p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.item-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2a5298;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 18px;
+    transition: transform 0.2s;
+}
+
+.remove-btn:hover {
+    transform: scale(1.2);
+}
+
+.cart-summary {
+    padding: 20px;
+    background: #f8f9fa;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.summary-row.total {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.checkout-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #2a5298;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.checkout-btn:hover {
+    background-color: #0a1220;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.empty-cart i {
+    font-size: 80px;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+.empty-cart h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.empty-cart p {
+    color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .cart-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .item-details, .item-price {
+        margin-bottom: 15px;
+    }
+    
+    .remove-form {
+        align-self: center;
+    }
+}
+</style>
+{% endblock %}
+{% block main_block %}
+<div class="container my-5 mt-5" >
+    
+    <h1 class="mt-5 cart">Your Shopping Cart</h1>
+    {% if cart_items %}
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if is_authenticated %}
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.item_name }}</td>
+                    <td>₹{{ item.price }}</td>
+                    <td>
+                        <form action="{% url 'remove_from_cart' item.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_index" value="{{ forloop.counter0 }}">
+                            <button type="submit" class="btn btn-sm btn-danger" data-id="{{ item.id }}">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+                {% else %}
+                    
+                {% endif %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <td colspan="2">₹{{ total }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'index' %}" class="btn btn-secondary">Continue Shopping</a>
+            <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
+        </div>
+
+    {% else %}
+        <p>Your cart is empty.</p>
+        <a href="{% url 'index' %}" class="btn btn-primary">Continue Shopping</a>
+    {% endif %}
+</div>
+{% endblock %}

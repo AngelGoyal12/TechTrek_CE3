@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<style>
+    body{
+        margin-top: 100px;
+    }
+</style>
+{%endblock%}
+{% block main_block %}
+<div class="container mt-5">
+    <h2 class="mb-4">Admin Dashboard - Manage Courses</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+   
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Orders</h5>
+                    <h3 class="mb-0">{{ total_orders }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Pending</h5>
+                    <h3 class="mb-0">{{ pending_orders }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Accepted</h5>
+                    <h3 class="mb-0">{{ accepted_orders }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Rejected</h5>
+                    <h3 class="mb-0">{{ rejected_orders }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="my-5">
+
+    <h3 class="mb-4">User Orders</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>User</th>
+                <th>Order ID</th>
+                <th>Email</th>
+                <th>Total</th>
+                <th>Grand Total</th>
+                <th>Order Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in user_orders %}
+            <tr>
+                <td>{{ order.user.username }}</td>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.email }}</td>
+                <td>${{ order.total }}</td>
+                <td>${{ order.grand_total }}</td>
+                <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
+                <td>
+                    {% if order.status == 'pending' %}
+                    <form method="post" action="{% url 'accept_order' order.id %}">
+
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-success">Accept</button>
+                    </form>
+                    <form method="post" action="{% url 'reject_order' order.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                    </form>
+                    {% elif order.status == 'accepted' %}
+                    <span class="badge bg-success">Accepted</span>
+                    {% elif order.status == 'rejected' %}
+                    <span class="badge bg-danger">Rejected</span>
+                    {% endif %}
+
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No user orders available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+    <a href="{% url 'add_course' %}" class="btn btn-success mb-3">Add New Crash Course</a>
+</div>
+{% endblock %}

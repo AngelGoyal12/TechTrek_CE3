@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login | TechTrek{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-card {
+        max-width: 450px;
+        margin: 60px auto;
+        padding: 35px;
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .login-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #34495e;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+    .btn-login {
+        background: linear-gradient(to right, #00c6ff, #0072ff);
+        border: none;
+        color: white;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 8px;
+        transition: background 0.3s ease;
+    }
+
+    .btn-login:hover {
+        background: linear-gradient(to right, #0072ff, #00c6ff);
+    }
+
+    .register-link {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.95rem;
+    }
+
+    .alert {
+        max-width: 450px;
+        margin: 10px auto;
+    }
+</style>
+{% endblock %}
+
+{% block main_block %}
+<div class="login-card">
+    <h2 class="login-title">Login</h2>
+
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username" required>
+        </div>
+    
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password" required>
+        </div>
+    
+        <div class="mb-3">
+            <label for="user_type" class="form-label">Login As</label>
+            <select name="user_type" class="form-control" id="user_type" required>
+                <option value="" disabled selected>Select type</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+            </select>
+        </div>
+    
+        <button type="submit" class="btn btn-login w-100">Login</button>
+    </form>
+    
+
+    <div class="register-link">
+        Don’t have an account? <a href="{% url 'register' %}">Register here</a>
+    </div>
+</div>
+{% endblock %}

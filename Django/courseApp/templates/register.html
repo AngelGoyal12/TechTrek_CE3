@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block extra_css %}
+<style>
+    .register-container {
+        max-width: 500px;
+        margin: 60px auto;
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 35px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .register-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #34495e;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+    .btn-register {
+        background: linear-gradient(to right, #00c6ff, #0072ff);
+        border: none;
+        color: white;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 8px;
+        transition: background 0.3s ease;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .btn-register:hover {
+        background: linear-gradient(to right, #0072ff, #00c6ff);
+    }
+
+    .login-redirect {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.95rem;
+    }
+</style>
+{% endblock %}
+
+{% block main_block %}
+<div class="register-container">
+    <h2 class="register-title">Create an Account</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+
+        <button type="submit" class="btn-register">Register</button>
+
+        <div class="login-redirect">
+            Already have an account? <a href="{% url 'login' %}">Login here</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

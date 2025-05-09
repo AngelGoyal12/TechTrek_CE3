@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% extends "base.html" %}
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechTrek: Your journey to tech mastery starts here.</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {% block extra_css %}
+    <style>
+        :root {
+            --primary-color: #2a5298;
+            --secondary-color: #1e1e1c;
+            --accent-color: #f5f5f5;
+            --text-color: #2d2f31;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+
+      
+        .hero {
+            margin-top: 70px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),;
+            color: var(--white);
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .explore-btn {
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        
+        .categories {
+            padding: 4rem 2rem;
+            background: var(--accent-color);
+        }
+
+        .categories h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: var(--white);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .category-card a{
+            text-decoration: none;
+            color: black;
+        }
+
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+       
+        .featured-courses {
+            padding: 4rem 2rem;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .course-card {
+            background: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .course-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .course-content {
+            padding: 1rem;
+        }
+
+        .course-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructor {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+
+        .price {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        
+        .become-instructor {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .instructor-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .start-teaching-btn {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+       
+        .testimonials {
+            padding: 4rem 2rem;
+            background: var(--accent-color);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-content {
+            text-align: center;
+        }
+
+        .student-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: block;
+            object-fit: cover;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .student-name {
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .student-title {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Enhanced Course Card Styles */
+        .course-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stars {
+            color: #f4c150;
+            margin-right: 0.5rem;
+        }
+
+        .rating-count {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+      
+        .featured-courses h2,
+        .testimonials h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-color);
+            font-size: 2.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--text-color);
+                cursor: pointer;
+            }
+
+            .search-bar {
+                margin: 0 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    {% endblock %}
+</head>
+<body>
+    {% block title_block %} Home Page {% endblock %}
+
+    {% block main_block %}
+    <section class="hero" style="background-image: url('../static/images/photo.avif');">
+        <div class="hero-content">
+            <h1>Your journey to tech mastery starts here.</h1>
+            <p>Study any topic, anytime. Choose from thousands of expert-led courses now.</p>
+            <a href="#"><button class="explore-btn">Explore Courses</button></a>
+        </div>
+    </section>
+
+    <section class="categories" id="categories">
+        <h2>Top Categories</h2>
+        <div class="category-grid">
+            
+            <div class="category-card">
+                <a href="{% url 'python' %}">
+                    <i class="fa-brands fa-python"></i>
+                    <h3>Python</h3>
+                </a>
+            </div>
+            <div class="category-card">
+                <a href="{% url 'webdev' %}">
+                    <i class="fa-brands fa-html5"></i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-brands fa-css3-alt"></i>
+                    <h3>Web Development</h3>
+                </a>
+            </div>
+            <div class="category-card">
+                <a href="{% url 'cpp' %}">
+                    <i class="fa-solid fa-code"></i>
+                    <h3>C++</h3>
+                </a>
+            </div>
+            <div class="category-card">
+                <a href="{% url 'sql' %}">
+                    <i class="fa-brands fa-python"></i>
+                    <h3>MySQL</h3>
+                </a>
+            </div>
+            <div class="category-card">
+                <a href="{% url 'js' %}">
+                    <i class="fa-brands fa-react"></i>
+                    <h3>JavaScript</h3>
+                </a>
+            </div>
+            <div class="category-card">
+                <a href="{% url 'datascience' %}">
+                    <i class="fa-brands fa-html5"></i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-brands fa-css3-alt"></i>
+                    <h3>Data Science</h3>
+                </a>
+            </div>
+            <div class="category-card">
+                <a href="{% url 'ai' %}">
+                    <i class="fa-solid fa-code"></i>
+                    <h3>Artificial Intelligence</h3>
+                </a>
+            </div>
+            <div class="category-card">
+                <a href="{% url 'react' %}">
+                    <i class="fa-brands fa-react"></i>
+                    <h3>React Js</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="become-instructor">
+        <div class="instructor-content">
+            <h2>Become an instructor</h2>
+            <p>Join thousands of instructors and earn money sharing your knowledge</p>
+            <a href="{% url 'careers:careers' %}"><button class="start-teaching-btn">Start Teaching Today</button></a>
+        </div>
+    </section>
+
+    <!-- <section class="testimonials">
+        <h2>What Our Students Say</h2>
+        <div class="testimonial-grid">
+            {% for testimonial in testimonials %}
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"{{ testimonial.content }}"</p>
+                    <p class="student-name">- {{ testimonial.student_name }}</p>
+                    <p class="student-title">{{ testimonial.student_title }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section> -->
+
+    {% endblock %}
+</body>
+</html>
